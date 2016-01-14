@@ -31,16 +31,18 @@ public class Parser {
         Queue<Document> queue = new LinkedList(); // queue that contains the next page to crawl
         HashSet<String> seen = new HashSet();
         queue.offer(doc);
+        seen.add(url);
 
+        System.out.println("Crawling: please wait");
         Document current;
         int count = 0;
-        while(!queue.isEmpty() && count < 250){  // BFS
+        while(!queue.isEmpty() && count < 50){  // BFS
             current = queue.poll();
             org.jsoup.select.Elements links = current.select("a");
             for(Element e: links){
                 String key = new String(e.attr("abs:href"));
-                if(key!=null && key.trim().length()>0 && key.matches("[http].+[^(pdf|rar|zip)]")) { // won't try invalid urls
-                    System.out.println("Trying key: " + key);
+                if(key!=null&& key.trim().length()>0 && key.matches("[http].+[^(pdf|rar|zip)]")) { // won't try invalid urls
+//                    System.out.println("Trying key: " + key);
                     if (!map.containsKey(key)) {
                         map.put(key, 1);
                     } else {
